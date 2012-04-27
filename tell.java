@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class tell {
 	public static String time(double ms) {
@@ -12,21 +11,22 @@ public class tell {
 		int w = d / 7;
 		
 		ts = "" + 
-				((w > 0) ? w + "w" : "") +
-				((d > 0) ? d % 7 + "d" : "") +
-				((h > 0) ? h % 24 + "h" : "") +
-				((min > 0) ? min % 60 + "m" : "") +
+			((w > 0) ? w + "w" : "") +
+			((d > 0) ? d % 7 + "d" : "") +
+			((h > 0) ? h % 24 + "h" : "") +
+			((min > 0) ? min % 60 + "m" : "") +
 			sec % 60 + "s";
 		return ts;
 	}	
 	
 	public static boolean check(String name) {
+		name = name.toLowerCase();
 		try {
 			FileInputStream f = new FileInputStream(name + ".tell");
 			DataInputStream i = new DataInputStream(f);
 			BufferedReader b = new BufferedReader(new InputStreamReader(i));
 			if (b.readLine().length() > 2) {
-				i.close(); return true;
+				i.close(); return true; // if message exists, return true
 			}
 			i.close();
 		}
@@ -36,6 +36,7 @@ public class tell {
 	}
 	
 	public static ArrayList<String> get(String name) {
+		name = name.toLowerCase();
 		ArrayList<String> tells = new ArrayList<String>();
 		
 		try {
@@ -44,7 +45,7 @@ public class tell {
 			BufferedReader b = new BufferedReader(new InputStreamReader(i));
 			String s;
 			while ((s = b.readLine()) != null) {
-				tells.add(s);
+				tells.add(s); // add message from file to arraylist
 			}
 			i.close();
 		}
@@ -55,27 +56,42 @@ public class tell {
 	
 	public static String set(String sender, String rec, boolean priv) {
 		String[] m = rec.split(" ", 2);
-		File f = new File(m[0] + ".tell"); 
+		m[0] = m[0].replace(":", ""); // fix for nubs including : in nick
+		m[0] = m[0].toLowerCase();
 		
+		// if msg starts with ",tell help"
+		if (m[0].endsWith("help")) { 
+			return sender + ": format for ,tell: ,tell USERNAME MESSAGE";
+		}
+		
+		// if there is no content after the nick
+		if (m.length == 1) {
+			return sender + ": you didn't include a message";
+		}
+		
+		// create .tell file if it doesn't exist
+		File f = new File(m[0] + ".tell"); 
 		if (!f.exists()) {
 			try {
 				f.createNewFile();
 			}
 			catch (Exception e) {}
 		}
-		PrintWriter fw;
+		
+		// append new message to .tell file
 		try {
-			fw = new PrintWriter(m[0] + ".tell");
-			fw.println(sender + " " + System.currentTimeMillis() + " " + (priv ? "1" : "0") + " " + m[1]);
-			fw.close();
+			FileWriter fw = new FileWriter(m[0] + ".tell", true);
+			BufferedWriter fb = new BufferedWriter(fw);
+			fb.write(sender + " " + System.currentTimeMillis() + " " + (priv ? "1" : "0") + " " + m[1]);
+			fb.newLine();
+			fb.close();
 		} catch (Exception e) {}
-
 		
-		
-		return sender + ": message noted";
+		return sender + ": noted";
 	}
 
 	public static void clear(String sender) {
+		// wipe contents of .tell file
 		try {
 			FileWriter f = new FileWriter(sender + ".tell");
 			BufferedWriter o = new BufferedWriter(f);

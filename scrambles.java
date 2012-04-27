@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -12,16 +11,26 @@ public class scrambles {
 		int a = -1; int b = -1; int j;
 		String s = "";
 		
-		while (l > 0) {
+		while (l-- > 0) {
 			j = rand.nextInt(t.length);
 			if (j % 3 != b % 3 && j != a) {
-				 s += t[j] + suf[rand.nextInt(suf.length)] + " ";
-                 a = b;
+				s += t[j] + suf[rand.nextInt(suf.length)] + " ";
+				 a = b;
                  b = j;
-                 l--;
 			}
 		}
-		
+		return s;
+	}
+	
+	public static String mu(int l) {
+		String[] t = {"M", "U"};
+		String[] suf = {"", "'", "2"};
+		int j = 0;
+		String s = "";
+		while (l-- > 0) {
+			s += t[j] + suf[rand.nextInt(3)] + " ";
+			j = 1 - j;
+		}
 		return s;
 	}
 	
@@ -47,8 +56,9 @@ public class scrambles {
 		if (msg.startsWith("6")) return scrambler(Arrays.asList("U", "R", "F", "D", "L", "B", "2U", "2R", "2F", "2D", "2L", "2B", "3U", "3R", "3F", "3D", "3L", "3B"), Arrays.asList("", "'", "2"), 80); 
 		if (msg.startsWith("7")) return scrambler(Arrays.asList("U", "R", "F", "D", "L", "B", "2U", "2R", "2F", "2D", "2L", "2B", "3U", "3R", "3F", "3D", "3L", "3B"), Arrays.asList("", "'", "2"), 100); 
 		if (msg.startsWith("8")) return scrambler(Arrays.asList("U", "R", "F", "D", "L", "B", "2U", "2R", "2F", "2D", "2L", "2B", "3U", "3R", "3F", "3D", "3L", "3B", "4U", "4R", "4F", "4D", "4L", "4B"), Arrays.asList("", "'", "2"), 120); 
+		if (msg.startsWith("mu")) return mu(20);
 		
-		return null;
+		return "something went pear-shaped :(";
 	}
 	
 }
