@@ -9,7 +9,7 @@ public class azn {
 	public static String random() {
 		String r = ""; 
 		try {
-			URL url = new URL("http://10.1.1.4/kdb/dump.php");
+			URL url = new URL("");
 			BufferedReader input = new BufferedReader(new InputStreamReader(url.openStream()));
 			String s;
 			int l = 1;

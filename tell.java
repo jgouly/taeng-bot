@@ -22,7 +22,7 @@ public class tell {
 	public static boolean check(String name) {
 		name = name.toLowerCase();
 		try {
-			FileInputStream f = new FileInputStream(name + ".tell");
+			FileInputStream f = new FileInputStream("tells/" + name + ".tell");
 			DataInputStream i = new DataInputStream(f);
 			BufferedReader b = new BufferedReader(new InputStreamReader(i));
 			if (b.readLine().length() > 2) {
@@ -40,7 +40,7 @@ public class tell {
 		ArrayList<String> tells = new ArrayList<String>();
 		
 		try {
-			FileInputStream f = new FileInputStream(name + ".tell");
+			FileInputStream f = new FileInputStream("tells/" + name + ".tell");
 			DataInputStream i = new DataInputStream(f);
 			BufferedReader b = new BufferedReader(new InputStreamReader(i));
 			String s;
@@ -70,7 +70,7 @@ public class tell {
 		}
 		
 		// create .tell file if it doesn't exist
-		File f = new File(m[0] + ".tell"); 
+		File f = new File("tells/" + m[0] + ".tell"); 
 		if (!f.exists()) {
 			try {
 				f.createNewFile();
@@ -80,7 +80,7 @@ public class tell {
 		
 		// append new message to .tell file
 		try {
-			FileWriter fw = new FileWriter(m[0] + ".tell", true);
+			FileWriter fw = new FileWriter("tells/" + m[0] + ".tell", true);
 			BufferedWriter fb = new BufferedWriter(fw);
 			fb.write(sender + " " + System.currentTimeMillis() + " " + (priv ? "1" : "0") + " " + m[1]);
 			fb.newLine();
@@ -93,7 +93,7 @@ public class tell {
 	public static void clear(String sender) {
 		// wipe contents of .tell file
 		try {
-			FileWriter f = new FileWriter(sender + ".tell");
+			FileWriter f = new FileWriter("tells/" + sender + ".tell");
 			BufferedWriter o = new BufferedWriter(f);
 			o.write("");
 			o.close();

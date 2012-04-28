@@ -10,7 +10,7 @@ public class remind {
 		name = name.toLowerCase();
 		
 		try {
-			FileInputStream f = new FileInputStream(name + ".remind");
+			FileInputStream f = new FileInputStream("reminds/" + name + ".remind");
 			DataInputStream i = new DataInputStream(f);
 			BufferedReader b = new BufferedReader(new InputStreamReader(i));
 			if (b.readLine().length() > 2) {
@@ -30,7 +30,7 @@ public class remind {
 		name = name.toLowerCase();
 		
 		try {
-			FileInputStream f = new FileInputStream(name + ".remind");
+			FileInputStream f = new FileInputStream("reminds/" + name + ".remind");
 			DataInputStream i = new DataInputStream(f);
 			BufferedReader b = new BufferedReader(new InputStreamReader(i));
 			String s; String[] m;
@@ -45,14 +45,14 @@ public class remind {
 		
 		// wipe contents of .remind file and replace with remaining reminders
 		try {
-			FileWriter f = new FileWriter(name + ".remind");
+			FileWriter f = new FileWriter("reminds/" + name + ".remind");
 			BufferedWriter o = new BufferedWriter(f);
 			o.write("");
 			o.close();
 			
 			for (int i = 0; i < keep.size(); i++) {
 				try {
-					FileWriter fw = new FileWriter(name + ".remind", true);
+					FileWriter fw = new FileWriter("reminds/" + name + ".remind", true);
 					BufferedWriter fb = new BufferedWriter(fw);
 					fb.write(keep.get(i));
 					fb.newLine();
@@ -79,7 +79,7 @@ public class remind {
 		if (m.length == 1) { // if there is no content after the nick
 			return sender + ": you didn't include a reminder";
 		}
-		File f = new File(sender + ".remind"); 
+		File f = new File("reminds/" + sender + ".remind"); 
 		
 		// create .remind file if it doesn't exist
 		if (!f.exists()) {
@@ -109,7 +109,7 @@ public class remind {
 		
 		// append new message to .remind file
 		try {
-			FileWriter fw = new FileWriter(sender + ".remind", true);
+			FileWriter fw = new FileWriter("reminds/" + sender + ".remind", true);
 			BufferedWriter fb = new BufferedWriter(fw);
 			fb.write(time + " " + m[1]);
 			fb.newLine();
